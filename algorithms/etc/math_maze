@@ -1,4 +1,4 @@
-```c++
+```C++
 #include <iostream>
 #include <cstdio>
 #include <queue>
