@@ -1,4 +1,3 @@
-```C++
 #include <iostream>
 #include <cstdio>
 #include <queue>
@@ -96,4 +95,3 @@ int main() {
   cout << endl << endl;
  }
 }
-```
