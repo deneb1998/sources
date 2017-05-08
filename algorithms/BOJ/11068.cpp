@@ -6,13 +6,6 @@ using namespace std;
 int t, a, s;
 vector<int> b;
 
-void func(int n) {
-	while (s) {
-		b.push_back(s%n);
-		s /= n;
-	}
-}
-
 bool isP() {
 	int s = b.size();
 	int isOdd = s % 2 == 0 ? 0 : 1;
@@ -26,17 +19,20 @@ int main() {
 	cin >> t;
 	int i;
 	while (t--) {
-		cin >> a;
+		scanf("%d", &a);
 		for (i = 2; i < 65; i++) {
 			s = a;
-			func(i);
+			while (s) {
+				b.push_back(s % i);
+				s /= i;
+			}
 			if (isP()) {
-				cout << "1\n";
+				printf("1\n");
 				b.clear();
 				break;
 			}
 			b.clear();
 		}
-		if (i == 65) cout << "0\n";
+		if (i == 65) printf("0\n");
 	}
 }
