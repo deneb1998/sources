@@ -7,11 +7,9 @@ int t, a, s;
 vector<int> b;
 
 void func(int n) {
-	int x = n;
-	while(s) {
-		b.push_back((s%x)/(x/n));
-		s -= s%x;
-		x *= n;
+	while (s) {
+		b.push_back(s%n);
+		s /= n;
 	}
 }
 
@@ -19,7 +17,7 @@ bool isP() {
 	int s = b.size();
 	int isOdd = s % 2 == 0 ? 0 : 1;
 	int mid = s / 2 - 1;
-	for (int i = mid, j=1; i >= 0; i--, j++) 
+	for (int i = mid, j = 1; i >= 0; i--, j++)
 		if (b[i] != b[mid + j + isOdd]) return false;
 	return true;
 }
