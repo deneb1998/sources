@@ -4,45 +4,44 @@
 #include <vector>
 using namespace std;
 
-struct node {
-	int x, ex;
-};
-
-int n, a[1000001];
-vector<vector<node>> b;
+int n, a[1000001][3];
+vector<int*> b;
 vector<int> ans;
 
-bool cmp(vector<node> a, vector<node> b) {
-	return a.back().x < b.back().x;
+bool cmp(int *a, int *b) {
+	return a[0] < b[0];
 }
 
 int main() {
 	cin >> n;
 	int i;
-	for (i = 0; i < n; scanf("%d", a + i++));
-	b.push_back(vector<node>({ { a[0],-1 } }));
+	for (i = 0; i < n; i++) {
+		scanf("%d", &a[i][0]);
+		a[i][2] = i;
+	}
+	b.push_back(a[0]); a[0][1] = -1;
 	for (i = 1; i < n; i++) {
-		if (a[i] > b.back().back().x) {
-			b.push_back(vector<node>({ { a[i], (int)(b.back().size()) - 1 } }));
+		if (b.back()[0] < a[i][0]) {
+			a[i][1] = b.back()[2];
+			b.push_back(a[i]);
+		}
+		else if (b.front()[0] >= a[i][0]) {
+			a[i][1] = -1;
+			b[0] = a[i];
 		}
 		else {
-			auto t = lower_bound(b.begin(), b.end(), vector<node>({ { a[i],0 } }), cmp);
-			if (t == b.begin()) t->push_back({ a[i],-1 });
-			else {
-				auto t2 = t--;
-				t2->push_back({ a[i],(int)(t->size()) - 1 });
-			}
+			auto t = lower_bound(b.begin(), b.end(), &a[i][0], cmp);
+			*t = a[i];
+			a[i][1] = (*(--t))[2];
 		}
 	}
-	cout << b.size() << endl;
-	int ex;
-	vector<vector<node>>::iterator t = --b.end();
-	ans.push_back(t->back().x);
-	ex = t->back().ex;
-	while (ex != -1) {
-		t--;
-		ans.push_back(t->at(ex).x);
-		ex = t->at(ex).ex;
+	int s = b.size();
+	cout << s << endl;
+	for (i = b[s-1][2];;) {
+		ans.push_back(a[i][0]);
+		i = a[i][1];
+		if (i == -1) break;
 	}
-	for (i = ans.size() - 1; i >= 0; printf("%d ", ans[i--]));
+	for (i = ans.size() - 1; i >= 0; i--)
+		printf("%d ", ans[i]);
 }
