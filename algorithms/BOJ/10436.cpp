@@ -21,8 +21,7 @@ void func() {
 	tmp = p / q;
 	p %= q;
 	func();
-	for (int i = 0; i < tmp; i++)
-		q += p;
+	q += tmp*p;
 }
 
 int main() {
