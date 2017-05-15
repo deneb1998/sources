@@ -1,35 +1,14 @@
 #include <cstdio>
-#define ll long long
 
-ll n, p, q, a[100], a2[100][2];
-int c, c2;
+long long n, p, q, tmp;
 char s[100];
-
-void func() {
-	ll tmp;
-	if (q == 1) {
-		q = p + 1;
-		p = 1;
-		return;
-	}
-	if (p < q) {
-		tmp = p;
-		p = q;
-		q -= tmp;
-		return;
-	}
-	tmp = p / q;
-	p %= q;
-	func();
-	q += tmp*p;
-}
 
 int main() {
 	int t, st, i, j;
 	scanf("%d", &t);
 	st = t;
 	while (t--) {
-		c = c2 = p = q = 0;
+		p = q = 0;
 		scanf("%d %s", &n, s);
 		for (i = 0;; i++) {
 			if (s[i] == '/') break;
@@ -40,9 +19,18 @@ int main() {
 			q *= 10;
 			q += s[j] - '0';
 		}
-		func();
-		printf("%lld ", n);
-		printf("%lld/", p);
-		printf("%lld\n", q);
+		if (q == 1) {
+			q = p + 1;
+			p = 1;
+		}
+		else {
+			tmp = p / q;
+			p %= q;
+			q -= p;
+			p += q;
+			q += tmp*p;
+		}
+		printf("%d ", n);
+		printf("%lld/%lld\n", p, q);
 	}
 }
