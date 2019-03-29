@@ -14,14 +14,14 @@ int main() {
 			dmg = 100;
 			if (bumerang)
 				dmg *= 1.2;
-			else
-				ammo--;
 			bumerang = false;
+			ammo--;
 			if (rand() % 2) {   // 크리티컬
 				dmg *= 2;
 				if (rand() % 2) {   // 부메랑
 					bumerang = true;
 					bumerang_num++;
+					ammo++;
 				}
 			}
 			sum += dmg;
