@@ -3,12 +3,13 @@ using namespace std;
 
 int main() {
 	srand(time(0));
-	bool bumerang = false;
+	bool bumerang;
 	int i = 100000, ammo, bumerang_num;
 	double sum, dmg, sumsum = 0, bumerang_sum = 0;
 	while (i--) {
 		ammo = 20;
 		sum = bumerang_num = 0;
+		bumerang = false;
 		while (ammo) {
 			dmg = 100;
 			if (bumerang)
