@@ -18,8 +18,10 @@
     <ClCompile Include="solve.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="base.cpp">
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="base.txt">
       <Filter>소스 파일</Filter>
-    </ClCompile>
+    </Text>
   </ItemGroup>
 </Project>
