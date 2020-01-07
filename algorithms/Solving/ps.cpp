@@ -1,6 +1,6 @@
 /*
-14501 퇴사
-https://www.acmicpc.net/problem/14501
+<문제번호> <문제이름>
+<문제 URL>
 */
 
 #include <iostream>
