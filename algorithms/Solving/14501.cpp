@@ -10,8 +10,8 @@ https://www.acmicpc.net/problem/14501
 #define min(a,b) ((a)>(b)?(b):(a))
 using namespace std;
 
-
+int n, t[15], p[15];
 
 int main() {
-
+	
 }
