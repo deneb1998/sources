@@ -10,7 +10,7 @@ https://www.acmicpc.net/problem/14501
 #define min(a,b) ((a)>(b)?(b):(a))
 using namespace std;
 
-int n, t[15], p[15], dp[16];
+int n, t[20], p[20], dp[20];
 int cnt = 0;
 
 int main() {
@@ -18,18 +18,17 @@ int main() {
 
 	int i;
 	cin >> n;
-	for (i = 0; i < n; i++) {
-		scanf("%d %d", &t[i], &p[i]);
+	for (i = 1; i <= n; i++) {
+		cin >> t[i] >> p[i];
 		dp[i] = 0;
 	}
-	
-	if (t[n - 1] == 1)
-		dp[n - 1] = p[n - 1];
-	for (i = n - 2; i >= 0; i--) {
-		if (i + t[i] > n)
+
+	for (i = n; i > 0; i--) {
+		if (i + t[i] > n + 1)
 			dp[i] = dp[i + 1];
-		else 
+		else
 			dp[i] = max(p[i] + dp[i + t[i]], dp[i + 1]);
 	}
-	cout << dp[0];
+	cout << dp[1] << endl;
+	return 0;
 }
