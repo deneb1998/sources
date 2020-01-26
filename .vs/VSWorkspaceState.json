@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\algorithms",
-    "\\algorithms\\etc"
+    "\\algorithms\\etc",
+    "\\algorithms\\Solving"
   ],
-  "SelectedNode": "\\algorithms\\etc",
+  "SelectedNode": "\\algorithms\\Solving\\solve.cpp",
   "PreviewInSolutionExplorer": false
 }
