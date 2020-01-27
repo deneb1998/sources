@@ -1,0 +1,19 @@
+
+
+// x ^ y 분할정복 //
+
+ll power(ll x, ll y) { 
+    ll ret = 1;
+    while (y > 0) {
+        if (y % 2) {
+            ret *= x;
+            ret %= P;
+        }
+        x *= x;
+        x %= P;
+        y /= 2;
+    }
+    return ret;
+}
+
+///////////////////
