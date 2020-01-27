@@ -16,4 +16,15 @@ ll power(ll x, ll y) {
     return ret;
 }
 
-///////////////////
+
+
+// x C y (Combination) 구하기 (범위 큼) //
+
+문제에서 모듈러 소수 P가 주어졌을 때
+x C y = x! / y!(x-y)!
+fac[x] = (fac[x-1] * x) % P (1 ~ x)
+inverse[y!] = y! ^ (P-2)
+inv[y-1] = inv[y] * y (y-1 ~ 1)
+
+ans = (fac[x] * inv[y]) % P
+ans = (ans * inv[x-y]) % P
