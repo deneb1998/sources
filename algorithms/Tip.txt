@@ -30,8 +30,10 @@ inv[y-1] = inv[y] * y (y-1 ~ 1)
 ans = (fac[x] * inv[y]) % P
 ans = (ans * inv[x-y]) % P
 
-2) 뤼카의 정리 이용
+2) 뤼카의 정리 이용 (추천)
 x C y mod P = x,y를 P진법으로 변환 후 각 자리수마다 Combination 후 곱셈
 ex. 
 152 C 35 mod 10
 = 1 C 0 * 5 C 3 * 2 C 5 mod 10
+주의점 : 이 경우 x C y 에서 y>x 인 경우가 존재할 수 있으므로 예외처리 필수
+주의점2: dp[x][y] = (combi(x-1, y-1) + combi(x-1, y)) % m  ...  <<% m 필수>>
