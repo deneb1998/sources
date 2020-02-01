@@ -1,86 +1,41 @@
 /*
-XOR
-https://www.acmicpc.net/problem/12844
+가장 긴 증가하는 부분 수열 4
+https://www.acmicpc.net/problem/14002
 */
 
 #include <iostream>
-#include <cstdio>
-#include <algorithm>
 #include <vector>
-typedef long long ll;
-#define max(a,b) ((a)>(b)?(a):(b))
-#define min(a,b) ((a)>(b)?(b):(a))
+#include <algorithm>
 using namespace std;
 
-int n, m, t, a, b, c, len = 0;
-int seg_tree[1050000];
+struct node {
+	int val, ex;
+};
 
-int seg_sum(int s, int e, int x) {
-	if (s > e)
-		return 0;
-	if (s == e) {
-		if (s >= a && e <= b)
-			return seg_tree[x];
-		return 0;
-	}
-	if (s >= a && e <= b)
-		return seg_tree[x];
-	if (s > b || e < a)
-		return 0;
-	return seg_sum(s, (s+e)/2, x * 2) ^ seg_sum((s+e) / 2 + 1, e, x * 2 + 1);
-}
-
-void seg_change(int s, int e, int x) {
-	if (s > e)
-		return;
-	if (s == e) {
-		if (s >= a && e <= b)
-			seg_tree[x] ^= c;
-		return;
-	}
-	if (s >= a && e <= b) {
-		seg_tree[x] ^= ((e - s + 1) % 2 ? c : 0);
-		seg_change(s, (s + e) / 2, x * 2);
-		seg_change((s + e) / 2 + 1, e, x * 2 + 1);
-		return;
-	}
-	if (s > b || e < a) 
-		return;
-	if (a >= s && b <= e) {
-		seg_tree[x] ^= ((b - a + 1) % 2 ? c : 0);
-		seg_change(s, (s + e) / 2, x * 2);
-		seg_change((s + e) / 2 + 1, e, x * 2 + 1);
-		return;
-	}
-	seg_tree[x] ^= ((e - a + 1) % 2 ? c : 0);
-	seg_change(s, (s + e) / 2, x * 2);
-	seg_change((s + e) / 2 + 1, e, x * 2 + 1);
+int cmp(pair<int, int> a, pair<int, int> b) {
+	return a.first < b.first;
 }
 
 int main() {
-	cin.tie(NULL);
 	ios::sync_with_stdio(false);
-
-	int i, j, k;
+	int n, i, len = 0;
+	node a[1010];
+	vector<pair<int, int> > v;
+	a[0].val = a[0].ex = -1;
+	v.push_back(make_pair(-1, 0));
 	cin >> n;
-	for (i = 1; i < n; i *= 2);
-	for (k = i; k < n + i; k++) {
-		cin >> seg_tree[k];
-		for (j = k / 2; j >= 1; j /= 2) {
-			seg_tree[j] ^= seg_tree[k];
-		}
-	}
-	cin >> m;
-	while (m--) {
-		cin >> t >> a >> b;
-		a++, b++;
-		if (a > b) swap(a, b);
-		if (t == 2) {
-			cout << seg_sum(1, i, 1) << '\n';
+	for(i=1;i<n;i++) {
+		cin >> a[i].val;
+		if (a[i].val > v.back().first) {
+			v.push_back(make_pair(a[i].val, i));
+			a[i].ex = (--(--v.end()))->second;
 		}
 		else {
-			cin >> c;
-			seg_change(1, i, 1);
+			auto it = lower_bound(v.begin(), v.end(), a[i].val, cmp);
+			it->first = a[i].val;
+			it->second = i;
+			a[i].ex = (--it)->second;
 		}
 	}
+	cout << v.size() - 1;
 }
