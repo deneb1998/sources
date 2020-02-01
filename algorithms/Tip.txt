@@ -39,6 +39,7 @@ ex.
 주의점2: dp[x][y] = (combi(x-1, y-1) + combi(x-1, y)) % m  ...  <<% m 필수>>
 
 
+
 // LIS (증가하는 가장 긴 수열) //
 
 1) lower_bound 이용 
@@ -48,3 +49,9 @@ if(v.back()<arr[i]) v.push_back(arr[i]), len++;
 else auto it = lower_bound(v.begin(), v.end(), arr[i]); *it = arr[i];
 cout << v.size()-1;
 주의점 : result != LIS 이다. 오직 LIS length만 알 수 있다.
+
+1-1) 실제 LIS 배열 알아내는 방법
+vector v를 pair<int, int> 로 만들고 first는 value, second는 index로 매핑
+입력배열에 대해 value와 vector v에서 연결된 직전 노드의 index를 저장하는 ex를 가지는 node 배열 생성
+node.value 엔 a[i]값이, node.ex엔 직전노드의 index값이, v.first엔 LIS_DP value값이, v.second엔 i값이 들어간다
+주의점 : lower_bound 함수 호출 시 pair<int, int> 에 대한 정렬함수 cmp 잊지 말 것
