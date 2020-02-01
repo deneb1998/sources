@@ -37,3 +37,14 @@ ex.
 = 1 C 0 * 5 C 3 * 2 C 5 mod 10
 주의점 : 이 경우 x C y 에서 y>x 인 경우가 존재할 수 있으므로 예외처리 필수
 주의점2: dp[x][y] = (combi(x-1, y-1) + combi(x-1, y)) % m  ...  <<% m 필수>>
+
+
+// LIS (증가하는 가장 긴 수열) //
+
+1) lower_bound 이용 
+vector<int> v;
+v.push(-INF); //중요!
+if(v.back()<arr[i]) v.push_back(arr[i]), len++;
+else auto it = lower_bound(v.begin(), v.end(), arr[i]); *it = arr[i];
+cout << v.size()-1;
+주의점 : result != LIS 이다. 오직 LIS length만 알 수 있다.
