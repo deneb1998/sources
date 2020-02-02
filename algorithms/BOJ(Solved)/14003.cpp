@@ -1,47 +1,53 @@
+/*
+가장 긴 증가하는 부분 수열 5
+https://www.acmicpc.net/problem/14003
+*/
+
+
 #include <iostream>
-#include <cstdio>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-int n, a[1000001][3];
-vector<int*> b;
+int n;
+pair<int, int> a[1000010];
+vector<pair<int, int> > v;
 vector<int> ans;
 
-bool cmp(int *a, int *b) {
-	return a[0] < b[0];
+int cmp(pair<int, int> a, pair<int, int> b) {
+	return a.first < b.first;
 }
 
 int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+
 	cin >> n;
 	int i;
+	v.push_back(make_pair(-1000000010, -1));
+
 	for (i = 0; i < n; i++) {
-		scanf("%d", &a[i][0]);
-		a[i][2] = i;
-	}
-	b.push_back(a[0]); a[0][1] = -1;
-	for (i = 1; i < n; i++) {
-		if (b.back()[0] < a[i][0]) {
-			a[i][1] = b.back()[2];
-			b.push_back(a[i]);
-		}
-		else if (b.front()[0] >= a[i][0]) {
-			a[i][1] = -1;
-			b[0] = a[i];
+		cin >> a[i].first;
+		if (a[i].first > v.back().first) {
+			a[i].second = v.back().second;
+			v.push_back(make_pair(a[i].first, i));
 		}
 		else {
-			auto t = lower_bound(b.begin(), b.end(), &a[i][0], cmp);
-			*t = a[i];
-			a[i][1] = (*(--t))[2];
+			auto it = lower_bound(v.begin(), v.end(), make_pair(a[i].first, -1), cmp);
+			it->first = a[i].first;
+			it->second = i;
+			a[i].second = (--it)->second;
 		}
 	}
-	int s = b.size();
-	cout << s << endl;
-	for (i = b[s-1][2];;) {
-		ans.push_back(a[i][0]);
-		i = a[i][1];
-		if (i == -1) break;
+
+	int len = v.size() - 1;
+	cout << len << '\n';
+	i = v.back().second;
+	while (i != -1) {
+		ans.push_back(a[i].first);
+		i = a[i].second;
 	}
-	for (i = ans.size() - 1; i >= 0; i--)
-		printf("%d ", ans[i]);
+	reverse(ans.begin(), ans.end());
+	for (auto it = ans.begin(); it != ans.end(); it++)
+		cout << *it << ' ';
 }
