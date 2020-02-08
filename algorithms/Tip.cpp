@@ -7,6 +7,7 @@
 2. x C y (Combination)
 3. 소수 구하기 (에라토스테네스의 체)
 4. x mod y (x가 Big Integer 일 때)
+5. GCD(x, y) (최대공약수)
 -------------------------*/
 
 // 1. x ^ y 분할정복 //
@@ -70,6 +71,15 @@ int mod(string s, int p)
 	for (int i=0;i<len;i++) ret = (ret*10 + (s[i]-'0')) % p;
 	return ret;
 }
+
+
+
+// 5. GCD(x, y) (최대공약수) //
+
+x%y가 0이면 y가 최대공약수
+아니면 x=y, y=x%y 이후 반복
+
+
 
 
 
