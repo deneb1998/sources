@@ -1,80 +1,121 @@
 /*
-XOR
-https://www.acmicpc.net/problem/12844
+고스택
+https://www.acmicpc.net/problem/3425
 */
-
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <stack>
 #define max(a,b) ((a)>(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
+#define p(a,b) make_pair((a), (b))
+#define INF 2011111111
+typedef long long ll;
 using namespace std;
+int dx[4] = { -1,1,0,0 }, dy[4] = { 0,0,-1,1 };
 
-int n, m, t, a, b, c;
-int v[1300000], lazy[1300000];
+stack<int> st;
+vector<string> order;
+string s;
+vector<int> num;
+int n;
 
-void lazy_down(int s, int e, int ind) {
-	if ((e - s + 1) % 2)
-		v[ind] ^= lazy[ind];
-	if (ind * 2 < 1300000)
-		lazy[ind * 2] ^= lazy[ind];
-	if (ind * 2 + 1 < 1300000)
-		lazy[ind * 2 + 1] ^= lazy[ind];
-	lazy[ind] = 0;
-}
-
-int calc(int s, int e, int x) {
-	lazy_down(s, e, x);
-	if (a <= s && b >= e) {
-		if (s == e)
-			return v[x];
-		v[x] = 0;
-		if (x * 2 < 1300000) 
-			v[x] = v[x * 2] ^ (((s + e) / 2 - s + 1) % 2 ? lazy[x * 2] : 0);
-		if (x * 2 + 1 < 1300000)
-			v[x] ^= v[x * 2 + 1] ^ ((e - ((s + e) / 2 + 1) + 1) % 2 ? lazy[x * 2 + 1] : 0);
-		return v[x];
-	}
-	if (e<a || s>b)
-		return 0;
-	return calc(s, (s + e) / 2, x * 2) ^ calc((s + e) / 2 + 1, e, x * 2 + 1);
-}
-
-void add(int s, int e, int x) {
-	lazy_down(s, e, x);
-	if (a <= s && b >= e) {
-		lazy[x] = c;
-		return;
-	}
-	if (e<a || s>b)
-		return;
-	add(s, (s + e) / 2, x * 2);
-	add((s + e) / 2 + 1, e, x * 2 + 1);
+int abs(int x) {
+	return x > 0 ? x : -x;
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-
-	int i, j, k;
-	cin >> n;
-	for (i = 1; i < n; i *= 2);
-	for (j = i; j < i + n; j++) {
-		cin >> v[j];
-		for (k = j / 2; k > 0; k /= 2)
-			v[k] ^= v[j];
-	}
-	cin >> m;
-	while (m--) {
-		cin >> t >> a >> b;
-		a++, b++;
-		if (a > b) swap(a, b);
-		if (t == 1) {
-			cin >> c;
-			add(1, i, 1);
+	ios::sync_with_stdio(false); cin.tie(NULL);
+	st = stack<int>();
+	order.clear();
+	num.clear();
+	while (1) {
+		cin >> s;
+		if (s[0] == 'Q') return 0;
+		if (s[0] == 'E') break;
+		if (s[0] == 'N') {
+			int x;
+			cin >> x;
+			num.push_back(x);
 		}
-		else {
-			cout << calc(1, i, 1) << '\n';
+		order.push_back(s);
+	}
+	cin >> n;
+	while (n--) {
+		int x, len = order.size(), i, tmp, a, b;
+		auto it = num.begin();
+		cin >> x;
+		st.push(x);
+		for (i = 0; i < len; i++) {
+			switch (order[i][0]) {
+			case 'N' :
+				st.push(*it++);
+				break;
+			case 'P' :
+				st.pop();
+				break;
+			case 'I' :
+				tmp = st.top();
+				st.pop();
+				st.push(-tmp);
+				break;
+			case 'D' :
+				if (order[i][1] == 'U') {
+					tmp = st.top();
+					st.push(tmp);
+				}
+				else {
+					a = st.top();
+					st.pop();
+					b = st.top();
+					st.pop();
+					tmp = abs(b) / abs(a);
+					if ((a < 0 && b>0) || (a > 0 && b < 0))
+						tmp = -tmp;
+					st.push(tmp);
+				}
+				break;
+			case 'S' :
+				if (order[i][1] == 'W') {
+					a = st.top();
+					st.pop();
+					b = st.top();
+					st.pop();
+					st.push(a);
+					st.push(b);
+				}
+				else {
+					a = st.top();
+					st.pop();
+					b = st.top();
+					st.pop();
+					st.push(b - a);
+				}
+				break;
+			case 'A' :
+				a = st.top();
+				st.pop();
+				b = st.top();
+				st.pop();
+				st.push(b + a);
+				break;
+			case 'M' :
+				if (order[i][1] == 'U') {
+					a = st.top();
+					st.pop();
+					b = st.top();
+					st.pop();
+					st.push(b * a);
+				}
+				else {
+					tmp = abs(b) % abs(a);
+					if (b < 0)
+						tmp = -tmp;
+					st.push(tmp);
+				}
+				break;
+			}
 		}
 	}
 }
