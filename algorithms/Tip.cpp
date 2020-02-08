@@ -1,9 +1,15 @@
 
 /* ------------------------
 -     0. 각종 수학 팁      -
-------------------------- */
+---------------------------
+<차례>
+1. x ^ y 분할정복
+2. x C y (Combination)
+3. 소수 구하기 (에라토스테네스의 체)
+4. x mod y (x가 Big Integer 일 때)
+-------------------------*/
 
-// x ^ y 분할정복 //
+// 1. x ^ y 분할정복 //
 
 ll power(ll x, ll y) { 
     ll ret = 1;
@@ -21,7 +27,7 @@ ll power(ll x, ll y) {
 
 
 
-// x C y (Combination) 구하기 (범위 큼) //
+// 2. x C y (Combination) 구하기 (범위 큼) //
 
 문제에서 모듈러 소수 P가 주어졌을 때
 
@@ -37,11 +43,33 @@ ans = (ans * inv[x-y]) % P
 x C y mod P = x,y를 P진법으로 변환 후 각 자리수마다 Combination 후 곱셈
 ex. 
 152 C 35 mod 10
-= 1 C 0 * 5 C 3 * 2 C 5 mod 10
+= 1 C 0 * 5 C 3 * 2 C 5 mod 10;
 //주의점 : 이 경우 x C y 에서 y>x 인 경우가 존재할 수 있으므로 예외처리 필수
 //주의점2: dp[x][y] = (combi(x-1, y-1) + combi(x-1, y)) % m  ...  <<% m 필수>>
 
 
+    
+
+// 3. 소수 구하기 (에라토스테네스의 체) //
+
+for (i = 2; i <= k; i++) {
+    if (!pn[i]) {
+        prime.push_back(i);
+        for (j = i * i; j <= k; j += i)
+            pn[j] = true;
+    }
+}
+
+
+
+// 4. x mod y (x가 Big Integer 일 때) //
+
+int mod(string s, int p)
+{
+	int ret = 0, len = s.size();
+	for (int i=0;i<len;i++) ret = (ret*10 + (s[i]-'0')) % p;
+	return ret;
+}
 
 
 
