@@ -9,6 +9,7 @@
 #include <vector>
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
+#define p(a,b) make_pair((a), (b))
 typedef long long ll;
 using namespace std;
 
