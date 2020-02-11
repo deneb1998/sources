@@ -1,45 +1,49 @@
 /*
-가장 긴 증가하는 부분 수열 6
-https://www.acmicpc.net/problem/17411
+최대유량 디닉 알고리즘 연습
+https://jason9319.tistory.com/150
 */
-
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <set>
-#define max(a,b) ((a)>(b)?(a):(b))
-#define min(a,b) ((a)<(b)?(a):(b))
-#define p(a,b) make_pair((a), (b))
-#define M (1e9+7)
-typedef long long ll;
+#include <queue>
 using namespace std;
 
-ll n, ans;
-vector<multiset<int> > v;
+struct node {
+	int to;
+	int cap;
+	int flow;
+};
+int n, k, a, b, c, S, E, level[101];
+vector<node> edge[101];
 
-bool cmp(multiset<int> a, multiset<int> b) {
-	return (*(a.begin()) < *(b.begin()));
+bool bfs() {
+	memset(level, -1, sizeof(level));
+	queue<int> q;
+	level[S] = 0;
+	q.push(S);
+	while (q.size()) {
+		int x = q.front();
+		q.pop();
+		for (auto i : edge[x]) {
+			int to = i.to;
+			int cap = i.cap;
+			if (level[to] == -1 && cap > 0) {
+				level[to] = level[x] + 1;
+				q.push(to);
+			}
+		}
+	}
+	return level[E] != -1;
 }
 
 int main() {
-	ios::sync_with_stdio(false); cin.tie(NULL);
-	cin >> n;
-	ll x;
-	multiset<int> ns;
-	ns.insert(-1234567890);
-	v.push_back(ns);
-	while (n--) {
-		cin >> x;
-		if (*v.back().begin() < x) {
-			multiset<int> ns;
-			ns.insert(x);
-			v.push_back(ns);
-		}
-		else {
-			vector<multiset<int>>::iterator it = lower_bound(v.begin(), v.end(), x, cmp);
-			(*it).insert(x);
-		}
+	cin >> n, k;
+	while (k--) {
+		cin >> a >> b >> c;
+		edge[a].push_back(node{ b,c,0 });
 	}
-	cout << v.size();
+	cin >> S >> E;
+
+
 }
