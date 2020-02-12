@@ -139,6 +139,13 @@ update 함수와 query 함수 시작 시 먼저 propagate
 
 // 3. network flow - maximum flow (최대 유량) //
 
-1) 에드몬드-카프 알고리즘
+1) 에드몬드-카프
 BFS로 소스->싱크 경로 탐색 후 플로우
-플로우 시 진행 반대방향 간선에 -flow 추가 (cap은 0);
+플로우 시 진행 반대방향 간선에 -flow 추가 (cap은 0
+// 참고 : 경로 탐색을 DFS로 하면 안됨
+
+2) Dininc
+for(ㄱ~ㄷ)
+ㄱ.BFS로 Level Graph 생성. 만약 level[end] == -1 일 경우 종료
+ㄴ.생성된 Level Grpah에서 DFS로 차단 유량 탐색 (차단 유량 : level[from]+1 == level[to] 여야만 유량을 흘릴 수 있음)
+ㄷ.(ㄴ)의 결과값 res가 0이면 ㄱ으로, 1 이상이면 ans+=res 후 (ㄴ) 
