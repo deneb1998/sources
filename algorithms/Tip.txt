@@ -89,6 +89,7 @@ x%y가 0이면 y가 최대공약수
 <차례>
 1. LIS(순증가하는 가장 긴 수열)
 2. segment tree (합을 저장하는 트리)
+3. network flow - maximum flow (최대 유량)
 -------------------------*/
 
 
@@ -133,3 +134,11 @@ void propagate(int s, int e, int ind){
 }
 update 함수와 query 함수 시작 시 먼저 propagate
 // 주의점 : update 진행 시 자식노드 재귀로 update 후 tree[x] = tree[x*2] + tree[x*2+1] 해주어야 리프에서 정상적으로 위까지 전파
+
+
+
+// 3. network flow - maximum flow (최대 유량) //
+
+1) 에드몬드-카프 알고리즘
+BFS로 소스->싱크 경로 탐색 후 플로우
+플로우 시 진행 반대방향 간선에 -flow 추가 (cap은 0);
