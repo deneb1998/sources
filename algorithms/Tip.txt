@@ -150,3 +150,30 @@ for(ㄱ~ㄷ)
 ㄴ.생성된 Level Grpah에서 DFS로 차단 유량 탐색 (차단 유량 : level[from]+1 == level[to] 여야만 유량을 흘릴 수 있음)
 ㄷ.(ㄴ)의 결과값 res가 0이면 ㄱ으로, 1 이상이면 ans+=res 후 (ㄴ) 
 // 주의점 : dfs에서 c = dfs() 일 때 c>0인 경우에만 return c; c==0 이면 전부 안돎
+
+
+
+
+
+
+/* ------------------------
+-      2. 코딩 팁들        -
+---------------------------
+<차례>
+1. class operator overloading (with set, multiset, etc...)
+-------------------------*/
+
+
+
+// 1. class operator overloading (with set, multiset, etc...) //
+class node {
+public:
+	int first;
+	int second;
+	node(int f, int s) :first(f), second(s) {}
+
+	bool operator<(node x) const {
+		return this->first < x.first;
+	}
+};
+set<node> edge[28];
