@@ -1,49 +1,61 @@
 /*
-최대유량 디닉 알고리즘 연습
-https://jason9319.tistory.com/150
+텀 프로젝트
+https://www.acmicpc.net/problem/9466
 */
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <queue>
+#include <memory.h>
 using namespace std;
 
-struct node {
-	int to;
-	int cap;
-	int flow;
-};
-int n, k, a, b, c, S, E, level[101];
-vector<node> edge[101];
+int T, n, arr[100010], ans, hasTeam[100010];
 
-bool bfs() {
-	memset(level, -1, sizeof(level));
-	queue<int> q;
-	level[S] = 0;
-	q.push(S);
-	while (q.size()) {
-		int x = q.front();
-		q.pop();
-		for (auto i : edge[x]) {
-			int to = i.to;
-			int cap = i.cap;
-			if (level[to] == -1 && cap > 0) {
-				level[to] = level[x] + 1;
-				q.push(to);
-			}
+void cycle(int x) {
+	if (hasTeam[x] != 0)
+		return;
+	int now = x;
+	bool visited[100010];
+	vector<int> v;
+	memset(visited, false, sizeof(visited));
+	while (1) {
+		if (hasTeam[now] != 0) {
+			for (int i : v)
+				hasTeam[i] = -1;
+			return;
 		}
+		visited[now] = true;
+		v.push_back(now);
+		if (visited[arr[now]]) {
+			while (hasTeam[now] == 0) {
+				hasTeam[now] = 1;
+				now = arr[now];
+				ans++;
+			}
+			for (int i : v) {
+				if (hasTeam[i] == 0)
+					hasTeam[i] = -1;
+			}
+			break;
+		}
+		now = arr[now];
 	}
-	return level[E] != -1;
 }
 
 int main() {
-	cin >> n, k;
-	while (k--) {
-		cin >> a >> b >> c;
-		edge[a].push_back(node{ b,c,0 });
+	ios::sync_with_stdio(false); cin.tie(NULL);
+	cin >> T;
+	while (T--) {
+		memset(arr, 0, sizeof(arr));
+		memset(hasTeam, 0, sizeof(hasTeam));
+		ans = 0;
+		cin >> n;
+		int i, j;
+		for (i = 1; i <= n; i++)
+			cin >> arr[i];
+		for (i = 1; i <= n; i++) {
+			cycle(i);
+		}
+		cout << n - ans << '\n';
 	}
-	cin >> S >> E;
-
-
 }
