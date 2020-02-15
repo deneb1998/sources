@@ -161,11 +161,13 @@ for(ㄱ~ㄷ)
 ---------------------------
 <차례>
 1. class operator overloading (with set, multiset, etc...)
+2. 주석 바꿔치기
 -------------------------*/
 
 
 
 // 1. class operator overloading (with set, multiset, etc...) //
+
 class node {
 public:
 	int first;
@@ -177,3 +179,11 @@ public:
 	}
 };
 set<node> edge[28];
+
+
+// 2. 주석 바꿔치기 //
+
+cout << "a로직입니다.";
+/*
+cout << "b로직입니다.";
+/**/
