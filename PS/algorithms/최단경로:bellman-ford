@@ -5,7 +5,7 @@ O(VE)
 
 bool bellman_ford() {
 	bool isChanged = false;
-	for (auto i : v) {
+	for (auto i : edge) {
 		if (dist[i.x] == INF)
 			continue;
 		if (dist[i.x] + i.val < dist[i.y]) {
