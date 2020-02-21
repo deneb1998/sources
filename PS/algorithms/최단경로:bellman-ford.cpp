@@ -1,3 +1,4 @@
+
 /*
 음수 간선 허용, 음수 사이클 존재 여부 판별가능
 O(VE)
@@ -16,9 +17,9 @@ bool bellman_ford() {
 	return isChanged;
 }
 
-int main(){
-  while(M--)
-    bellman_ford();
-  if(bellman_ford())
-    isCycling = true;
+int main() {
+	while (M--)
+		bellman_ford();
+	if (bellman_ford())
+		isCycling = true;
 }
