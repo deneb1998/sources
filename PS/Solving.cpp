@@ -1,105 +1,66 @@
 /*
-철로
-https://www.acmicpc.net/problem/13334
+웜홀
+https://www.acmicpc.net/problem/1865
 */
 
 #include <iostream>
 #include <algorithm>
-#include <set>
+#include <vector>
+#include <queue>
+#include <memory.h>
+#define INF ((1<<31) - 1)
 using namespace std;
-typedef long long ll;
-class byA {
-public:
-	ll a, b;
-	byA(ll a, ll b) :a(a), b(b) {}
 
-	bool operator<(byA x) const {
-		if (this->a != x.a)
-			return this->a < x.a;
-		return this->b < x.b;
-	}
+int tc, n, m, w, a, b, c, cnt[510], dist[510];
+struct node {
+	int to, v;
 };
-class byB {
-public:
-	ll a, b;
-	byB(ll a, ll b) :a(a), b(b) {}
+vector<node> edge[6010];
 
-	bool operator<(byB x) const {
-		if (this->b != x.b)
-			return this->b < x.b;
-		return this->a < x.a;
+bool spfa() {
+	bool isInQ[510]; memset(isInQ, 0, sizeof(isInQ));
+	fill(dist, dist + 509, INF);
+	dist[1] = 0;
+	queue<int> q;
+	q.push(1);
+	isInQ[1] = true;
+	cnt[1] = 1;
+	while (!q.empty()) {
+		int x = q.front();
+		q.pop();
+		isInQ[x] = false;
+		for (auto i : edge[x]) {
+			if (dist[x] + i.v >= dist[i.to])
+				continue;
+			dist[i.to] = dist[x] + i.v;
+			if (!isInQ[i.to]) {
+				if (++cnt[i.to] > n)
+					return false;
+				q.push(i.to);
+				isInQ[i.to] = true;
+			}
+		}
 	}
-};
-multiset<byA> msA;
-multiset<byB> msB;
-ll n, a, b, d, res, ans, cnt;
-bool isBeginContain = false;
+	return true;
+}
 
 int main() {
 	ios::sync_with_stdio(false); cin.tie(NULL);
-	cin >> n;
-	while (n--) {
-		cin >> a >> b;
-		if (a > b) swap(a, b);
-		msA.emplace(a, b);
-		msB.emplace(a, b);
-	}
-	cin >> d;
-	auto it = msB.begin();
-	auto begin = msA.begin();
-	
-	if (begin->b <= begin->a + d) {
-		auto next = begin;
-		cnt = 1;
-		while (1) {
-			next++;
-			if (next == msA.end() || next->a != begin->a || next->b != begin->b)
-				break;
-			cnt++;
+	cin >> tc;
+	while (tc--) {
+		memset(cnt, 0, sizeof(cnt));
+		for (int i = 0; i < 6010; i++)
+			edge[i].clear();
+		cin >> n >> m >> w;
+		while (m--) {
+			cin >> a >> b >> c;
+			edge[a].push_back(node{ b, c });
+			edge[b].push_back(node{ a, c });
 		}
-		res += cnt;
-		ans += cnt;
-		begin = --next;
-		isBeginContain = true;
-	}
-	while (it!=msB.end() && begin->a + d >= it->b) {
-		if (isBeginContain && it->a == begin->a && it->b == begin->b)
-			res--, ans--;
-		res++, ans++;
-		it++;
-	}
-	while (1) {
-		isBeginContain = false;
-		cnt = 1;
-		auto next = begin;
-		while (1) {
-			if (next->b <= next->a + d)
-				res--;
-			next++;
-			if (next == msA.end())
-				break;
-			if (next->a != begin->a) {
-				begin = next;
-				while (1) {
-					next++;
-					if (next == msA.end() || next->a != begin->a || next->b != begin->b)
-						break;
-					cnt++;
-				}
-				break;
-			}
+		while (w--) {
+			cin >> a >> b >> c;
+			edge[a].push_back(node{ b, c });
 		}
-		begin = next;
-		if (next == msA.end())
-			break;
-		while (it!=msB.end() && begin->a + d >= it->b) {
-			res++;
-			it++;
-		}
-		if (res > ans)
-			ans = res;
-		if (it == msB.end())
-			break;
+		cout << (spfa() ? "NO" : "YES");
 	}
-	cout << ans;
 }
