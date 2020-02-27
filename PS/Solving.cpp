@@ -1,85 +1,58 @@
-/*
-토렌트
-https://www.acmicpc.net/problem/9577
-*/
+https://www.acmicpc.net/problem/1671
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <queue>
+#include <set>
 #include <memory.h>
 #define INF ((1<<31) - 1)
+#define maxN 60
 using namespace std;
 
-int t, n, m, a, b, c, x, level[205], ans, cap[205][205], flow[205][205], can[105][105], maxT;
+int n, a, b, c, matched[52], ans, it[52], cnt[52];
+struct node {
+	int x, y, z;
+};
+vector<node> shark;
 
-vector<int> edge[205];
-
-bool leveling() {
-	memset(level, -1, sizeof(level));
-	level[0] = 1;
-	queue<int> q;
-	q.push(0);
-	while (!q.empty()) {
-		int now = q.front();
-		q.pop();
-		for (auto i : edge[now]) {
-			if (level[i] != -1 || cap[now][i] <= flow[now][i])
-				continue;
-			level[i] = level[now] + 1;
-			q.push(i);
-		}
-	}
-	return (level[maxT + n + 1] != -1);
+bool cmp(node a, node b) {
+	if (a.x != b.x) return a.x < b.x;
+	if (a.y != b.y) return a.y < b.y;
+	return a.z < b.z;
 }
 
-bool dinic(int maxT) {
-	memset(flow, 0, sizeof(flow));
-	while (leveling()) {
-
+int dfs(int now, int change_cnt) {
+	cnt[now] += change_cnt;
+	for (; it[now] < now; it[now]++) {
+		if(shark[now].y < shark[it[now]].y || shark[now].z < shark[it[now]].z || (matched[it[now]] != -1 && !dfs(matched[it[now]], -1)))
+			continue;
+		matched[it[now]] = now;
+		if (cnt[now] < 2) 
+			cnt[now]++;
+		if (cnt[now] == 2) {
+			it[now]++;
+			break;
+			return 1;
+		}
 	}
+	return 0;
 }
 
 int main() {
-	//ios::sync_with_stdio(false); cin.tie(NULL);
-	cin >> t;
-	while (t--) {
-		memset(cap, 0, sizeof(cap));
-		memset(can, -1, sizeof(can));
-
-		cin >> n >> m;
-		maxT = -1;
-		int i, j;
-		while (m--) {
-			cin >> a >> b >> c;
-			if (a == b) continue;
-			maxT = max(maxT, b);
-			while (c--) {
-				cin >> x;
-				for (i = a + 1; i <= b; i++)
-					can[i][x] = 1;
-			}
-		}
-		for (i = 1; i <= maxT; i++) {
-			edge[0].push_back(i);
-			cap[0][i] = 1;
-			for (j = 1; j <= n; j++) {
-				if (can[i][j] != 1)
-					continue;
-				edge[i].push_back(maxT + j);
-				cap[i][maxT + j] = 1;
-			}
-		}
-		for (i = maxT + 1; i <= maxT + n; i++) {
-			edge[i].push_back(maxT + n + 1);
-			cap[i][maxT + n + 1] = 1;
-		}
-		if (!dinic(maxT)) {
-			cout << -1 << '\n';
-			continue;
-		}
-		for (i = n; i < maxT; i++)
-			if (dinic(i)) break;
-		cout << i << '\n';
+	ios::sync_with_stdio(false); cin.tie(NULL);
+	cin >> n;
+	int i;
+	for (i = 0; i < n; i++) {
+		cin >> a >> b >> c;
+		shark.push_back(node{ a,b,c });
 	}
+	sort(shark.begin(), shark.end(), cmp);
+	memset(matched, -1, sizeof(matched));
+	for (i = 0; i < n; i++)
+		dfs(i, 0);
+	for (i = 0; i < n; i++)
+		if (matched[i] == -1) 
+			ans++;
+	cout << ans;
 }
