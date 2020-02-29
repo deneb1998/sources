@@ -24,27 +24,18 @@ bool spfa() {
 }
 
 void max_flow() {
-	int child[maxN];
-	memset(child, -1, sizeof(child));
-	int now = END, minFlow = INF;
-	while (1) {
-		int p = parent[now];
-		if (p == -1) break;
-		child[p] = now;
-		minFlow = min(minFlow, cap[p][now] - flow[p][now]);
-		now = p;
+	int minFlow = INF, i, child[maxN];
+	for (i = END; i != 0; i = parent[i]) {
+		int p = parent[i];
+		child[p] = i;
+		minFlow = min(minFlow, cap[p][i] - flow[p][i]);
 	}
-	mf += minFlow;
-	now = 0;
-	while (1) {
-		int to = child[now];
-		flow[now][to] += minFlow;
-		flow[to][now] -= minFlow;
-		ansCost += cost[now][to];
-		now = to;
-		if (now == END) 
-			break;
+	for (i = END; i != 0; i = parent[i]) {
+		int p = parent[i];
+		flow[p][i] += minFlow;
+		flow[i][p] -= minFlow;
 	}
+	ans += ;
 }
 
 int main() {
