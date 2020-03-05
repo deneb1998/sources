@@ -1,4 +1,7 @@
-https://www.acmicpc.net/problem/1671
+/*
+PSENICA
+https://www.acmicpc.net/problem/10611
+*/
 
 #include <iostream>
 #include <algorithm>
@@ -6,53 +9,64 @@ https://www.acmicpc.net/problem/1671
 #include <queue>
 #include <set>
 #include <memory.h>
-#define INF ((1<<31) - 1)
-#define maxN 60
+#include <deque>
 using namespace std;
+typedef long long ll;
 
-int n, a, b, c, matched[52], ans, it[52], cnt[52];
-struct node {
-	int x, y, z;
-};
-vector<node> shark;
+int n, x, cnt[100007], s, e;
+vector<int> v;
+bool turn = true;
 
-bool cmp(node a, node b) {
-	if (a.x != b.x) return a.x < b.x;
-	if (a.y != b.y) return a.y < b.y;
-	return a.z < b.z;
-}
-
-int dfs(int now, int change_cnt) {
-	cnt[now] += change_cnt;
-	for (; it[now] < now; it[now]++) {
-		if(shark[now].y < shark[it[now]].y || shark[now].z < shark[it[now]].z || (matched[it[now]] != -1 && !dfs(matched[it[now]], -1)))
-			continue;
-		matched[it[now]] = now;
-		if (cnt[now] < 2) 
-			cnt[now]++;
-		if (cnt[now] == 2) {
-			it[now]++;
-			break;
-			return 1;
-		}
-	}
-	return 0;
-}
 
 int main() {
 	ios::sync_with_stdio(false); cin.tie(NULL);
 	cin >> n;
 	int i;
 	for (i = 0; i < n; i++) {
-		cin >> a >> b >> c;
-		shark.push_back(node{ a,b,c });
+		cin >> x;
+		if (!cnt[x]++)
+			v.push_back(x);
 	}
-	sort(shark.begin(), shark.end(), cmp);
-	memset(matched, -1, sizeof(matched));
-	for (i = 0; i < n; i++)
-		dfs(i, 0);
-	for (i = 0; i < n; i++)
-		if (matched[i] == -1) 
-			ans++;
-	cout << ans;
+	sort(v.begin(), v.end());
+	s = 0, e = v.size()-1;
+	while (e - s + 1 >= 3) {
+		int a = v[s], b = v[e];
+		if (cnt[a] > cnt[b]) {
+			cnt[v[--e]] += cnt[b];
+			cnt[v[s+1]] += cnt[b];
+			cnt[v[s]] -= cnt[b];
+			cnt[b] = 0;
+		}
+		else if (cnt[a] < cnt[b]) {
+			cnt[v[++s]] += cnt[a];
+			cnt[v[e - 1]] += cnt[a];
+			cnt[v[e]] -= cnt[a];
+			cnt[a] = 0;
+		}
+		else {
+			if (e - s + 1 == 3) {
+				if (turn) s++;
+				else e--;
+				turn = !turn;
+			}
+			else {
+				s++;
+				e--;
+			}
+		}
+	}
+	cout << (turn ? "Slavko" : "Mirko") << '\n' << v[s] << ' ' << v[e];
 }
+
+
+/*
+1 1 2 3 4 5 6 8 8 8
+
+2 2 2 3 4 5 6 6 6 8
+
+2 2 3 3 4 5 6 6 6 6
+
+3 3 3 3 4 5 5 5 6 6
+
+3 3 4 4 4 5 5 5 5 5
+*/
