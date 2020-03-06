@@ -1,7 +1,7 @@
 /*
-PŠENICA
+PSENICA
 https://www.acmicpc.net/problem/10611
-Algorithm : 정렬, 
+Algorithm : 
 */
 
 #include <iostream>
@@ -14,41 +14,47 @@ Algorithm : 정렬,
 using namespace std;
 typedef long long ll;
 
-int n, x, cnt;
+int n, x, cnt[100007], s, e;
 vector<int> v;
-bool turn = true, check[100007];
+bool turn = true;
 
 
 int main() {
 	ios::sync_with_stdio(false); cin.tie(NULL);
 	cin >> n;
-	while (n--) {
+	int i;
+	for (i = 0; i < n; i++) {
 		cin >> x;
-		v.push_back(x);
-		if (!check[x]) {
-			check[x] = true;
-			cnt++;
-		}
+		if (!cnt[x]++)
+			v.push_back(x);
 	}
-	auto it = v.begin();
 	sort(v.begin(), v.end());
-	while (cnt >= 3) {
-		if (turn) {
-			for (it = v.begin(); (*it) == v.front(); it++);
-			int next = *it;
-			it--;
-			if (it == v.begin()) cnt--;
-			*it = next;
+	s = 0, e = v.size()-1;
+	while (e - s + 1 >= 3) {
+		int a = v[s], b = v[e];
+		if (cnt[a] > cnt[b]) {
+			cnt[v[--e]] += cnt[b];
+			cnt[v[s+1]] += cnt[b];
+			cnt[v[s]] -= cnt[b];
+			cnt[b] = 0;
+			turn = true;
+		}
+		else if (cnt[a] < cnt[b]) {
+			cnt[v[++s]] += cnt[a];
+			cnt[v[e - 1]] += cnt[a];
+			cnt[v[e]] -= cnt[a];
+			cnt[a] = 0;
+			turn = false;
 		}
 		else {
-			for (it = --v.end(); (*it) == v.back(); it--);
-			int next = *it;
-			it++; it++;
-			if (it == v.end()) cnt--;
-			it--;
-			*it = next;
+			if (e - s + 1 == 3) {
+				turn = !turn;
+				turn ? s++ : e--;
+				break;
+			}
+			cnt[v[++s]] += cnt[a];
+			cnt[v[--e]] += cnt[b];
 		}
-		turn = !turn;
 	}
-	cout << (turn ? "Slavko" : "Mirko") << '\n' << v.front() << ' ' << v.back();
+	cout << (turn ? "Slavko" : "Mirko") << '\n' << v[s] << ' ' << v[e];
 }
