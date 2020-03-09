@@ -1,72 +1,39 @@
-/*
-PSENICA
-https://www.acmicpc.net/problem/10611
-*/
-
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <queue>
-#include <set>
-#include <memory.h>
-#include <deque>
 using namespace std;
 typedef long long ll;
 
-int n, x, cnt[100007], s, e;
-vector<int> v;
-bool turn = true;
-
+int n, m, x;
+vector<int> dp[510][510];
 
 int main() {
 	ios::sync_with_stdio(false); cin.tie(NULL);
 	cin >> n;
-	int i;
-	for (i = 0; i < n; i++) {
+	m = 2 * n - 1;
+	int i, j, k;
+	for (i = 1; i <= m; i++) {
 		cin >> x;
-		if (!cnt[x]++)
-			v.push_back(x);
-	}
-	sort(v.begin(), v.end());
-	s = 0, e = v.size()-1;
-	while (e - s + 1 >= 3) {
-		int a = v[s], b = v[e];
-		if (cnt[a] > cnt[b]) {
-			cnt[v[--e]] += cnt[b];
-			cnt[v[s+1]] += cnt[b];
-			cnt[v[s]] -= cnt[b];
-			cnt[b] = 0;
+		bool check[510][510] = { false, };
+		if (dp[1][x].empty()) {
+			dp[1][x].push_back(x);
+			check[1][x] = true;
 		}
-		else if (cnt[a] < cnt[b]) {
-			cnt[v[++s]] += cnt[a];
-			cnt[v[e - 1]] += cnt[a];
-			cnt[v[e]] -= cnt[a];
-			cnt[a] = 0;
-		}
-		else {
-			if (e - s + 1 == 3) {
-				if (turn) s++;
-				else e--;
-				turn = !turn;
-			}
-			else {
-				s++;
-				e--;
+		for (j = 2; j <= i && j <= n; j++) { //j개
+			for (k = 0; k < n; k++) { //k를 만들수있나
+				if (!dp[j][(k + x) % n].empty()) continue;
+				if (!dp[j - 1][k].empty() && !check[j - 1][k]) {
+					dp[j][(k + x) % n] = dp[j - 1][k];
+					dp[j][(k + x) % n].push_back(x);
+					check[j][(k + x) % n] = true;
+					if (j == n && (k + x) % n == 0) {
+						for (auto it : dp[j][(k + x) % n])
+							cout << it << ' ';
+						return 0;
+					}
+				}
 			}
 		}
 	}
-	cout << (turn ? "Slavko" : "Mirko") << '\n' << v[s] << ' ' << v[e];
+	cout << -1;
 }
-
-
-/*
-1 1 2 3 4 5 6 8 8 8
-
-2 2 2 3 4 5 6 6 6 8
-
-2 2 3 3 4 5 6 6 6 6
-
-3 3 3 3 4 5 5 5 6 6
-
-3 3 4 4 4 5 5 5 5 5
-*/
