@@ -1,21 +1,16 @@
 /*
-문제 이름
-문제 링크
+Hashing
+https://www.acmicpc.net/problem/15829
 */
-
-
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#define max(a,b) ((a)>(b)?(a):(b))
-#define min(a,b) ((a)<(b)?(a):(b))
-#define p(a,b) make_pair((a), (b))
-typedef long long ll;
+#include <bits/stdc++.h>
+#define INF ((1<<31) - 1)
 using namespace std;
+typedef unsigned int uint;
+typedef long long ll;
+typedef unsigned long long ull;
 
 
 
 int main() {
 	ios::sync_with_stdio(false); cin.tie(NULL);
-
 }
