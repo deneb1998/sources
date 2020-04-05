@@ -1,4 +1,7 @@
 // C++ includes used for precompiling -*- C++ -*-
+
+// If you want to use this in VS, create header file at
+// C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\bits
  
 // Copyright (C) 2003-2013 Free Software Foundation, Inc.
 //
